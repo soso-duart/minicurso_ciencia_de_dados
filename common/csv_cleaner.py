@@ -2,8 +2,7 @@ import re
 import os
 import logging
 
-
-logger = logging.getLogger("my_app")
+logger = logging.getLogger("common")
 
 PATTERNS = [
     # Internal double quotes → single quote
@@ -44,7 +43,8 @@ def clean_csv(file_path: str, source_encoding: str = "latin1", target_encoding: 
 
         os.replace(temp_path, file_path)
         logger.info(
-            f"CSV file cleaned successfully: {file_path}")
+            f"CSV file cleaned successfully: {file_path}"
+        )
 
     except Exception:
         logger.exception(f"Error cleaning CSV file: {file_path}")

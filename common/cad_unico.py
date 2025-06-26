@@ -1,18 +1,17 @@
 import os
 import requests
 import zipfile
-from common import clean_csv, clean_xlsx, execute_query
+from common import clean_csv, clean_xlsx, DatabaseConnection
+from concurrent.futures import ThreadPoolExecutor
 import logging
 
-from concurrent.futures import ThreadPoolExecutor
-
-logger = logging.getLogger("my_app")
+logger = logging.getLogger("common")
 
 CAD_UNICO_URL = "https://www.mds.gov.br/webarquivos/publicacao/sagi/microdados/01_cadastro_unico/base_amostra_cad_201812.zip"
 DATA_DICTIONARY_URL = "https://aplicacoes.mds.gov.br/sagi/dicivip_datain/ckfinder/userfiles/files/Dicionario_base_identificada_pt_R03.xlsx"
 
 
-def ingest_cad_unico_data(data_dir="data"):
+def ingest_cad_unico_data(data_dir="data", database="database.duckdb"):
     logger.info("Ingesting CAD Unico data...")
 
     zip_path = os.path.join(data_dir, "base_amostra_cad_201812.zip")
@@ -36,8 +35,12 @@ def ingest_cad_unico_data(data_dir="data"):
         zip_ref.extractall(data_dir)
         logger.info("CAD Unico data extracted successfully.")
 
-    path_pessoa = f"data/base_amostra_cad_201812/base_amostra_pessoa_201812.csv"
-    path_familia = f"data/base_amostra_cad_201812/base_amostra_familia_201812.csv"
+    path_pessoa = os.path.join(
+        data_dir, "base_amostra_cad_201812/base_amostra_pessoa_201812.csv"
+    )
+    path_familia = os.path.join(
+        data_dir, "base_amostra_cad_201812/base_amostra_familia_201812.csv"
+    )
 
     with ThreadPoolExecutor() as executor:
         logger.info("Cleaning CAD Unico CSV files...")
@@ -45,12 +48,14 @@ def ingest_cad_unico_data(data_dir="data"):
         executor.submit(clean_csv, path_familia)
     logger.info("CAD Unico CSV files cleaned successfully.")
 
-    execute_query(f"""
+    conn = DatabaseConnection(database)
+
+    conn.execute(f"""
         CREATE OR REPLACE TABLE pessoas AS 
         SELECT * FROM read_csv('{path_pessoa}', delim=';', header=true, ignore_errors=true)
     """)
 
-    execute_query(f"""
+    conn.execute(f"""
         CREATE OR REPLACE TABLE familias AS 
         SELECT * FROM read_csv('{path_familia}', delim=';', header=true, ignore_errors=true)
     """)
@@ -62,13 +67,15 @@ def ingest_data_dictionary(data_dir="data"):
     logger.info("Ingesting CAD Unico data dictionary...")
 
     dict_path = os.path.join(
-        data_dir, "Dicionario_base_identificada_pt_R03.xlsx")
+        data_dir, "Dicionario_base_identificada_pt_R03.xlsx"
+    )
 
     logger.info("Downloading data dictionary...")
     response = requests.get(DATA_DICTIONARY_URL)
     if response.status_code != 200:
         logger.error(
-            f"Failed to download data dictionary: {response.status_code}")
+            f"Failed to download data dictionary: {response.status_code}"
+        )
         return
     logger.info("Data dictionary downloaded successfully.")
 

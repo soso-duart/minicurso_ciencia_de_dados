@@ -1,15 +1,15 @@
 import os
 import json
 import requests
-from common import execute_query
+from common import DatabaseConnection
 import logging
 
-logger = logging.getLogger("my_app")
+logger = logging.getLogger("common")
 
 IBGE_URL = "https://servicodados.ibge.gov.br/api/v1/localidades/municipios?view=nivelado"
 
 
-def ingest_ibge_data(data_dir="data"):
+def ingest_ibge_data(data_dir="data", database="database.duckdb"):
     logger.info("Ingesting IBGE data...")
 
     ibge_path = os.path.join(data_dir, "ibge.json")
@@ -24,7 +24,8 @@ def ingest_ibge_data(data_dir="data"):
         logger.error(f"Failed to download IBGE data: {response.status_code}")
         return
 
-    execute_query(
+    conn = DatabaseConnection(database)
+    conn.execute(
         f"""
         CREATE OR REPLACE TABLE ibge_municipios AS 
         SELECT * FROM read_json_auto('{ibge_path}', ignore_errors=true)

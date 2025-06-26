@@ -40,9 +40,12 @@ Neste minicurso, vamos usar ferramentas simples e modernas (como o DuckDB) para 
 * [Pandas](https://pandas.pydata.org/docs/)
 * [Requests](https://requests.readthedocs.io/en/latest/)
 * [Jupyter](https://docs.jupyter.org/en/latest/)
+* [Jupyter Widgets](https://ipywidgets.readthedocs.io/en/stable/#jupyter-widgets)
 * [Matplotlib](https://matplotlib.org/stable/)
 * [seaborn](https://seaborn.pydata.org/)
 * [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
+* [Docker](https://docs.docker.com/)
+* [Dev Container](https://containers.dev/implementors/json_reference/)
 
 # 💻 Configuração do ambiente
 Torne o o ambiente pronto para o minicurso com os seguintes passos:

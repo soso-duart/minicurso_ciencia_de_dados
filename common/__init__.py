@@ -1,6 +1,6 @@
 from common.csv_cleaner import clean_csv
 from common.xlsx_cleaner import clean_xlsx
-from common.database import execute_query
+from common.database import DatabaseConnection
 from common.ibge import ingest_ibge_data
 from common.cad_unico import ingest_cad_unico_data, ingest_data_dictionary
 
@@ -13,7 +13,7 @@ os.makedirs(DATA_DIR, exist_ok=True
 LOG_DIR = "logs"
 os.makedirs(LOG_DIR, exist_ok=True)
 
-logger = logging.getLogger("my_app")
+logger = logging.getLogger("common")
 logger.setLevel(logging.DEBUG)
 logger.propagate = False
 formatter = logging.Formatter('%(asctime)s - %(levelname)s - %(message)s')

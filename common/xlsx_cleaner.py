@@ -3,7 +3,7 @@ from openpyxl.styles import Font, PatternFill
 
 import logging
 
-logger = logging.getLogger("my_app")
+logger = logging.getLogger("common")
 
 
 def clean_xlsx(file_path: str) -> None:
