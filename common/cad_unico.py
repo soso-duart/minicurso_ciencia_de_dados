@@ -4,6 +4,8 @@ import zipfile
 from common import clean_csv, clean_xlsx, execute_query
 import logging
 
+from concurrent.futures import ThreadPoolExecutor
+
 logger = logging.getLogger("my_app")
 
 CAD_UNICO_URL = "https://www.mds.gov.br/webarquivos/publicacao/sagi/microdados/01_cadastro_unico/base_amostra_cad_201812.zip"
@@ -37,8 +39,11 @@ def ingest_cad_unico_data(data_dir="data"):
     path_pessoa = f"data/base_amostra_cad_201812/base_amostra_pessoa_201812.csv"
     path_familia = f"data/base_amostra_cad_201812/base_amostra_familia_201812.csv"
 
-    clean_csv(path_pessoa)
-    clean_csv(path_familia)
+    with ThreadPoolExecutor() as executor:
+        logger.info("Cleaning CAD Unico CSV files...")
+        executor.submit(clean_csv, path_pessoa)
+        executor.submit(clean_csv, path_familia)
+        logger.info("CAD Unico CSV files cleaned successfully.")
 
     execute_query(f"""
         CREATE OR REPLACE TABLE pessoas AS 
