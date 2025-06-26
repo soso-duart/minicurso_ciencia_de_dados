@@ -1,11 +1,9 @@
 {
-  "image": "mcr.microsoft.com/devcontainers/python:0-3.13.3",
-  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
-  "hostRequirements": {
-    "cpus": 8,
-    "memory": "16gb",
-    "storage": "16gb"
-  },
+  "name": "minicurso_ciencia_de_dados",
+  "dockerComposeFile": "docker-compose.yml",
+  "service": "app",
+  "workspaceFolder": "/workspaces",
+  "shutdownAction": "stopCompose",
   "customizations": {
     "vscode": {
       "extensions": [
@@ -16,6 +14,15 @@
         "dbcode.dbcode"
       ]
     }
+  },
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb",
+    "storage": "16gb"
+  },
+  "features": {
+    "ghcr.io/devcontainers/features/docker-outside-of-docker:1": {}
   }
 }
+
 
