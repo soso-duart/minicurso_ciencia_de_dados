@@ -1,0 +1,21 @@
+{
+  "image": "mcr.microsoft.com/devcontainers/python:0-3.13.3",
+  "postCreateCommand": "pip install --no-cache-dir -r requirements.txt",
+  "hostRequirements": {
+    "cpus": 8,
+    "memory": "16gb",
+    "storage": "16gb"
+  },
+  "customizations": {
+    "vscode": {
+      "extensions": [
+        "ms-python.python",
+        "ms-python.autopep8",
+        "ms-python.vscode-pylance",
+        "ms-toolsai.jupyter",
+        "dbcode.dbcode"
+      ]
+    }
+  }
+}
+
