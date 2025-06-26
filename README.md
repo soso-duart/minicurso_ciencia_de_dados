@@ -46,6 +46,8 @@ Neste minicurso, vamos usar ferramentas simples e modernas (como o DuckDB) para 
 * [openpyxl](https://openpyxl.readthedocs.io/en/stable/)
 * [Docker](https://docs.docker.com/)
 * [Dev Container](https://containers.dev/implementors/json_reference/)
+* [Git](https://git-scm.com/doc)
+* [GitHub](https://docs.github.com/en)
 
 ## Como iniciar o ambiente no Codespaces a partir de um fork
 
