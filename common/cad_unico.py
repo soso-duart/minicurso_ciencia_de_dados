@@ -43,7 +43,7 @@ def ingest_cad_unico_data(data_dir="data"):
         logger.info("Cleaning CAD Unico CSV files...")
         executor.submit(clean_csv, path_pessoa)
         executor.submit(clean_csv, path_familia)
-        logger.info("CAD Unico CSV files cleaned successfully.")
+    logger.info("CAD Unico CSV files cleaned successfully.")
 
     execute_query(f"""
         CREATE OR REPLACE TABLE pessoas AS 
